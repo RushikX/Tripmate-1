@@ -2,6 +2,11 @@
 
 TripMate is a comprehensive platform for carpooling, car rental, and bike pooling built on the MERN stack (MongoDB, Express.js, React, Node.js).
 
+## Deployment
+
+[Live Demo - Deployment Link](https://tripmate-1-e2ea.vercel.app/carpool)
+
+
 ## Features
 
 - **Carpooling:** Create and join carpool trips
@@ -87,6 +92,7 @@ TripMate is a comprehensive platform for carpooling, car rental, and bike poolin
     ```
 
 ---
+
 
 
 
