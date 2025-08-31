@@ -47,7 +47,7 @@ app.use(limiter);
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
     ? [process.env.CLIENT_URL]
-    : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8080'],
+    : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8081'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
