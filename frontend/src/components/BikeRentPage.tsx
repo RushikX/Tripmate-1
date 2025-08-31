@@ -333,18 +333,7 @@ const BikeRentPage = () => {
     return true;
   }) : [];
 
-  const [bikeType, setBikeType] = useState<'all' | 'scooter' | 'motorcycle' | 'electric'>('all');
-  const filteredListings = Array.isArray(listings) 
-  ? listings.filter(listing => {
-      if (searchCity && !listing.location.city.toLowerCase().includes(searchCity.toLowerCase())) return false;
-      if (rentalType !== 'all') {
-        if (rentalType === 'short_term' && listing.pricePerHour > 50) return false;
-        if (rentalType === 'long_term' && listing.pricePerDay > 500) return false;
-      }
-      if (bikeType !== 'all' && listing.bikeType !== bikeType) return false;
-      return true;
-    })
-  : [];
+ 
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-6xl bg-white dark:bg-black">
