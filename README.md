@@ -4,7 +4,7 @@ TripMate is a comprehensive platform for carpooling, car rental, and bike poolin
 
 ## Deployment
 
-[Live Demo - Deployment Link](https://tripmate-1-e2ea.vercel.app/carpool)
+[Live Demo - Deployment Link](https://tripmate-1-e2ea.vercel.app)
 
 
 ## Features
@@ -92,6 +92,7 @@ TripMate is a comprehensive platform for carpooling, car rental, and bike poolin
     ```
 
 ---
+
 
 
 
