@@ -32,6 +32,16 @@ export const API_ENDPOINTS = {
     DRIVER_TRIPS: `${API_BASE_URL}/carpool/driver/my-trips`,
   },
   
+  // Bike Pool
+  BIKE_POOL: {
+    CREATE: `${API_BASE_URL}/bike-pool`,
+    GET_ALL: `${API_BASE_URL}/bike-pool`,
+    GET_BY_ID: (id: string) => `${API_BASE_URL}/bike-pool/${id}`,
+    UPDATE: (id: string) => `${API_BASE_URL}/bike-pool/${id}`,
+    DELETE: (id: string) => `${API_BASE_URL}/bike-pool/${id}`,
+    DRIVER_TRIPS: `${API_BASE_URL}/bike-pool/driver/my-trips`,
+  },
+  
   // Vehicle Rentals
   VEHICLES: {
     CAR_RENT: `${API_BASE_URL}/car-rent`,

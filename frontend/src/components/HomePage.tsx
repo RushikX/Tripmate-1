@@ -150,6 +150,13 @@ const HomePage = () => {
       route: '/carpool'
     },
     {
+      title: 'Bike Pool',
+      description: 'Share bike rides and split costs with fellow travelers',
+      icon: Bike,
+      color: 'bg-blue-600',
+      route: '/bike-pool'
+    },
+    {
       title: 'Car Rental',
       description: 'Rent cars by the hour or day for your convenience',
       icon: Car,

@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url';
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import carpoolRoutes from './routes/carpool.js';
+import bikePoolRoutes from './routes/bikePool.js';
 import carRentRoutes from './routes/carRent.js';
 import bikeRentRoutes from './routes/bikeRent.js';
 import bookingRoutes from './routes/bookings.js';
@@ -19,6 +20,7 @@ import vehicleRoutes from './routes/vehicles.js';
 // Import models to ensure they're registered
 import './models/User.js';
 import './models/CarPool.js';
+import './models/BikePool.js';
 import './models/Vehicle.js';
 import './models/Booking.js';
 import './models/UserRating.js';
@@ -45,10 +47,10 @@ app.use(limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
+  origin: process.env.NODE_ENV === 'development'
     ? [process.env.CLIENT_URL]
-    : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8081'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8080', 'http://localhost:8081'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
@@ -65,6 +67,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/carpool', carpoolRoutes);
+app.use('/api/bike-pool', bikePoolRoutes);
 app.use('/api/car-rent', carRentRoutes);
 app.use('/api/bike-rent', bikeRentRoutes);
 app.use('/api/bookings', bookingRoutes);

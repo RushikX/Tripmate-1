@@ -8,7 +8,7 @@ const bookingSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['carpool', 'car-rent', 'bike-rent'],
+    enum: ['carpool', 'bike-pool', 'car-rent', 'bike-rent'],
     required: true
   },
   // For carpool bookings
@@ -16,6 +16,12 @@ const bookingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'CarPool',
     required: function() { return this.type === 'carpool'; }
+  },
+  // For bike pool bookings
+  bikePoolTrip: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'BikePool',
+    required: function() { return this.type === 'bike-pool'; }
   },
   // For vehicle rentals
   vehicle: {

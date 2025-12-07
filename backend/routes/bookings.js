@@ -1,6 +1,7 @@
 import express from 'express';
 import Booking from '../models/Booking.js';
 import CarPool from '../models/CarPool.js';
+import BikePool from '../models/BikePool.js';
 import Vehicle from '../models/Vehicle.js';
 import auth from '../middleware/auth.js';
 import { body, validationResult } from 'express-validator';
@@ -14,6 +15,7 @@ router.get('/', auth, async (req, res) => {
   try {
     const bookings = await Booking.find({ user: req.user.id })
       .populate('carpoolTrip')
+      .populate('bikePoolTrip')
       .populate('vehicle')
       .sort({ createdAt: -1 });
     
@@ -28,7 +30,7 @@ router.get('/', auth, async (req, res) => {
 // @desc    Create a new booking
 // @access  Private
 router.post('/', auth, [
-  body('type').isIn(['carpool', 'car-rent', 'bike-rent']).withMessage('Valid booking type is required'),
+  body('type').isIn(['carpool', 'bike-pool', 'car-rent', 'bike-rent']).withMessage('Valid booking type is required'),
   body('startTime').isISO8601().withMessage('Valid start time is required'),
   body('endTime').isISO8601().withMessage('Valid end time is required'),
   body('pickupLocation').notEmpty().withMessage('Pickup location is required'),
@@ -44,6 +46,7 @@ router.post('/', auth, [
     const {
       type,
       carpoolTrip,
+      bikePoolTrip,
       vehicle,
       startTime,
       endTime,
@@ -58,6 +61,9 @@ router.post('/', auth, [
     if (type === 'carpool' && !carpoolTrip) {
       return res.status(400).json({ error: 'Carpool trip ID is required for carpool bookings' });
     }
+    if (type === 'bike-pool' && !bikePoolTrip) {
+      return res.status(400).json({ error: 'Bike pool trip ID is required for bike pool bookings' });
+    }
     if (['car-rent', 'bike-rent'].includes(type) && !vehicle) {
       return res.status(400).json({ error: 'Vehicle ID is required for vehicle rentals' });
     }
@@ -67,6 +73,20 @@ router.post('/', auth, [
       const trip = await CarPool.findById(carpoolTrip);
       if (!trip) {
         return res.status(404).json({ error: 'Carpool trip not found' });
+      }
+      if (trip.availableSeats <= 0) {
+        return res.status(400).json({ error: 'No available seats on this trip' });
+      }
+      // Update available seats
+      trip.availableSeats -= 1;
+      await trip.save();
+    }
+
+    // Check if bike pool trip has available seats
+    if (type === 'bike-pool') {
+      const trip = await BikePool.findById(bikePoolTrip);
+      if (!trip) {
+        return res.status(404).json({ error: 'Bike pool trip not found' });
       }
       if (trip.availableSeats <= 0) {
         return res.status(400).json({ error: 'No available seats on this trip' });
@@ -91,6 +111,7 @@ router.post('/', auth, [
       user: req.user.id,
       type,
       carpoolTrip: type === 'carpool' ? carpoolTrip : undefined,
+      bikePoolTrip: type === 'bike-pool' ? bikePoolTrip : undefined,
       vehicle: ['car-rent', 'bike-rent'].includes(type) ? vehicle : undefined,
       startTime,
       endTime,
@@ -105,6 +126,7 @@ router.post('/', auth, [
 
     const booking = await newBooking.save();
     await booking.populate('carpoolTrip');
+    await booking.populate('bikePoolTrip');
     await booking.populate('vehicle');
     
     res.status(201).json(booking);
@@ -121,6 +143,7 @@ router.get('/:id', auth, async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id)
       .populate('carpoolTrip')
+      .populate('bikePoolTrip')
       .populate('vehicle')
       .populate('user', 'name email');
     
@@ -160,7 +183,7 @@ router.put('/:id', auth, async (req, res) => {
       req.params.id,
       { ...req.body, updatedAt: Date.now() },
       { new: true, runValidators: true }
-    ).populate('carpoolTrip').populate('vehicle');
+    ).populate('carpoolTrip').populate('bikePoolTrip').populate('vehicle');
     
     res.json(updatedBooking);
   } catch (error) {
@@ -188,6 +211,15 @@ router.delete('/:id', auth, async (req, res) => {
     // If it's a carpool booking, restore the seat
     if (booking.type === 'carpool' && booking.carpoolTrip) {
       const trip = await CarPool.findById(booking.carpoolTrip);
+      if (trip) {
+        trip.availableSeats += 1;
+        await trip.save();
+      }
+    }
+
+    // If it's a bike pool booking, restore the seat
+    if (booking.type === 'bike-pool' && booking.bikePoolTrip) {
+      const trip = await BikePool.findById(booking.bikePoolTrip);
       if (trip) {
         trip.availableSeats += 1;
         await trip.save();

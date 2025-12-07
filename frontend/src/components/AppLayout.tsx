@@ -19,6 +19,7 @@ import { useTheme } from '@/hooks/useTheme';
 const navigation = [
   { title: 'Home', url: '/home', icon: Home },
   { title: 'Car Pool', url: '/carpool', icon: Users },
+  { title: 'Bike Pool', url: '/bike-pool', icon: Bike },
   { title: 'Car Rent', url: '/car-rent', icon: Car },
   { title: 'Bike Rent', url: '/bike-rent', icon: Bike },
 ];

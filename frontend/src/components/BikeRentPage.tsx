@@ -26,6 +26,8 @@ interface BikeListing {
   mileage: number;
   pricePerHour: number;
   pricePerDay: number;
+  bikeType?: string;
+  engineCapacity?: number;
   location: {
     address: string;
     city: string;
@@ -64,6 +66,7 @@ const BikeRentPage = () => {
   const [myRentals, setMyRentals] = useState<any[]>([]);
   const [searchCity, setSearchCity] = useState('');
   const [rentalType, setRentalType] = useState<'short_term' | 'long_term' | 'all'>('all');
+  const [bikeType, setBikeType] = useState<string>('all');
   const [loading, setLoading] = useState(false);
   const [selectedListing, setSelectedListing] = useState<BikeListing | null>(null);
   const [showBookingDialog, setShowBookingDialog] = useState(false);
@@ -330,6 +333,7 @@ const BikeRentPage = () => {
       if (rentalType === 'short_term' && listing.pricePerHour > 50) return false;
       if (rentalType === 'long_term' && listing.pricePerDay > 500) return false;
     }
+    if (bikeType !== 'all' && listing.bikeType && listing.bikeType !== bikeType) return false;
     return true;
   }) : [];
 
@@ -502,7 +506,7 @@ const BikeRentPage = () => {
                       <Button
                         onClick={() => {
                           setSelectedListing(listing);
-                          setShowRentalDialog(true);
+                          setShowBookingDialog(true);
                         }}
                         disabled={!listing.isAvailable}
                       >

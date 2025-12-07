@@ -10,10 +10,12 @@ import LandingPage from "@/components/LandingPage";
 import AuthPage from "@/components/AuthPage";
 import HomePage from "@/components/HomePage";
 import CarPoolPage from "@/components/CarPoolPage";
+import BikePoolPage from "@/components/BikePoolPage";
 import CarRentPage from "@/components/CarRentPage";
 import BikeRentPage from "@/components/BikeRentPage";
 import ProfilePage from "@/components/ProfilePage";
 import CreateCarpoolPage from "@/components/CreateCarpoolPage";
+import CreateBikePoolPage from "@/components/CreateBikePoolPage";
 import CreateVehiclePage from "@/components/CreateVehiclePage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AppLayout from "@/components/AppLayout";
@@ -55,10 +57,24 @@ const AppRoutes = () => {
           </AppLayout>
         </ProtectedRoute>
       } />
+      <Route path="/bike-pool" element={
+        <ProtectedRoute>
+          <AppLayout>
+            <BikePoolPage />
+          </AppLayout>
+        </ProtectedRoute>
+      } />
       <Route path="/create-carpool" element={
         <ProtectedRoute>
           <AppLayout>
             <CreateCarpoolPage />
+          </AppLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/create-bike-pool" element={
+        <ProtectedRoute>
+          <AppLayout>
+            <CreateBikePoolPage />
           </AppLayout>
         </ProtectedRoute>
       } />
