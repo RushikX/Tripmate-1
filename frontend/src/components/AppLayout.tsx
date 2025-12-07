@@ -20,7 +20,7 @@ const navigation = [
   { title: 'Home', url: '/home', icon: Home },
   { title: 'Car Pool', url: '/carpool', icon: Users },
   { title: 'Car Rent', url: '/car-rent', icon: Car },
-  // { title: 'Bike Rent', url: '/bike-rent', icon: Bike },
+  { title: 'Bike Rent', url: '/bike-rent', icon: Bike },
 ];
 
 interface AppLayoutProps {
