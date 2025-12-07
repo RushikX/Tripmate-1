@@ -46,9 +46,25 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // CORS configuration
+const allowedOrigins = [];
+if (process.env.CLIENT_URL) {
+  // If CLIENT_URL is set, use it (supports both development and production)
+  const clientUrls = process.env.CLIENT_URL.split(',').map(url => url.trim());
+  allowedOrigins.push(...clientUrls);
+}
+// Add localhost URLs for development
+if (process.env.NODE_ENV !== 'production') {
+  allowedOrigins.push(
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:8080',
+    'http://localhost:8081'
+  );
+}
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'development'
-    ? [process.env.CLIENT_URL]
+  origin: allowedOrigins.length > 0 
+    ? allowedOrigins 
     : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8080', 'http://localhost:8081'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
